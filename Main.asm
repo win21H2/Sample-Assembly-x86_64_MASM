@@ -2,6 +2,10 @@
 ; Signed, 9662e103-129a
 
 ; http://www.c-jump.com/CIS77/ASM/Instructions/lecture.html
+; https://identity.pub/2018/11/01/asm-blank-window.html
+; https://www.plantation-productions.com/Webster/
+
+; NASM with VS 2022 https://github.com/ShiftMediaProject/VSNASM
 
 ; +----------+--------------------------------------------------------+
 ; | Register | Function                                               |

@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <MASM Include="Main.asm" />
+    <MASM Include="ReadME.asm" />
+    <MASM Include="Test.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

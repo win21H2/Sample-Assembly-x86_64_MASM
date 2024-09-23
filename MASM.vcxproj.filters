@@ -18,5 +18,11 @@
     <MASM Include="Main.asm">
       <Filter>Source Files</Filter>
     </MASM>
+    <MASM Include="Test.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
+    <MASM Include="ReadME.asm">
+      <Filter>Source Files</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

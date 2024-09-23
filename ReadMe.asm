@@ -1,0 +1,1 @@
+; Running: rebuild MASM project, then run local windows debugger with x86 solution platform
