@@ -34,7 +34,7 @@
 ; ExitProcess code [1]: arithmetic solve
 
 .386
-.MODEL flat, stdcall
+.model flat, stdcall
 option casemap:none
 
 include \masm32\include\kernel32.inc
@@ -45,7 +45,7 @@ includelib \masm32\lib\kernel32.lib
 includelib \masm32\lib\masm32.lib
 includelib \masm32\lib\msvcrt.lib
 
-.DATA
+.data
     INPUT_TYPE_MSG db "Input calculation method: [s]um, [d]ifference, [p]roduct, [q]uotient, or s[o]lve: ", 0
     INVALID_INPUT_MSG db "Invalid input!", 0Ah, 0
 
@@ -69,68 +69,62 @@ includelib \masm32\lib\msvcrt.lib
     SOLVE_FOR_BUFFER db 10 dup(0)
     CRLF db 0Dh, 0Ah, 0
 
-.CODE
+.code
 start:
     INVOKE StdOut, addr INPUT_TYPE_MSG
     INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
 
-    MOV esi, offset INPUT_BUFFER
-    MOV al, [esi]
+    mov esi, offset INPUT_BUFFER
+    mov al, [esi]
     
-    CMP al, 'o'
-    JE INPUT_TYPE_SOL
-    CMP al, 's'
-    JE INPUT_TYPE_SUM
-    CMP al, 'd'
-    JE INPUT_TYPE_DIFF
-    CMP al, 'p'
-    JE INPUT_TYPE_PROD
-    CMP al, 'q'
-    JE INPUT_TYPE_QUOT
-    JMP INPUT_INVAL
+    cmp al, 'o'
+    je EXIT_PROC
+    cmp al, 's'
+    je INPUT_TYPE_SUM
+    cmp al, 'd'
+    je EXIT_PROC
+    cmp al, 'p'
+    je EXIT_PROC
+    cmp al, 'q'
+    je EXIT_PROC
+    jmp INPUT_INVAL
 
 INPUT_INVAL:
-    INVOKE StdOut, addr INVALID_INPUT_MSG
-    JMP start
-
-INPUT_TYPE_SOL:
-    INVOKE StdOut, addr I_SOL_1
-    INVOKE StdIn, addr EXPRESSION_BUFFER, sizeof EXPRESSION_BUFFER
-
-    INVOKE StdOut, addr I_SOL_2
-    INVOKE StdIn, addr SOLVE_FOR_BUFFER, sizeof SOLVE_FOR_BUFFER
-    INVOKE ExitProcess, 100
+    invoke StdOut, addr INVALID_INPUT_MSG
+    jmp start
 
 INPUT_TYPE_SUM:
-    INVOKE StdOut, addr I_SUM_1
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
+    invoke StdOut, addr I_SUM_1
+    invoke StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
 
-    INVOKE StdOut, addr I_SUM_2
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
-    INVOKE ExitProcess, 201
+    mov esi, offset INPUT_BUFFER
+    mov eax, [esi]
+    mov DWORD PTR [input1], eax
 
-INPUT_TYPE_DIFF:
-    INVOKE StdOut, addr I_DIFF_1
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
+    invoke StdOut, addr I_SUM_2
+    invoke StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
 
-    INVOKE StdOut, addr I_DIFF_2
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
-    INVOKE ExitProcess, 202
+    mov esi, offset INPUT_BUFFER
+    mov eax, [esi]
+    mov DWORD PTR [input2], eax
 
-INPUT_TYPE_PROD:
-    INVOKE StdOut, addr I_PROD_1
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
+    mov eax, DWORD PTR [input1]
+    add eax, DWORD PTR [input2]
 
-    INVOKE StdOut, addr I_PROD_2
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
-    INVOKE ExitProcess, 203
+    ; TRY TO PRINT OUT THE OUTPUT, FROM HERE
 
-INPUT_TYPE_QUOT:
-    INVOKE StdOut, addr I_QUOT_1
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
+    push 3000
+    call Sleep
 
-    INVOKE StdOut, addr I_QUOT_2
-    INVOKE StdIn, addr INPUT_BUFFER, sizeof INPUT_BUFFER
-    INVOKE ExitProcess, 204
+    ; INVOKE StdOut, addr I_SUM_1
+    ; INVOKE StdOut, eax
+    ; INVOKE ExitProcess, 200
+
+EXIT_PROC:
+    invoke ExitProcess, 1
+
+.data
+    input1 DWORD ?
+    input2 DWORD ?
 
 end start
